@@ -1,4 +1,4 @@
-import { Center, CircularProgress, Heading } from "@chakra-ui/react";
+import { Center, CircularProgress, Grid, Heading } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import Receipt from "../types";
 import { v4 as uuidv4 } from "uuid";
@@ -26,7 +26,7 @@ export const Home: React.FC = () => {
     <Backdrop>
       <Wrapper>
         <Banner />
-        <Heading ml="1em" fontSize="4rem" my="0.5em" color="purple.500">
+        <Heading fontSize="4rem" my="0.5em" color="purple.500">
           Receipts
         </Heading>
         {isLoading && (
@@ -34,10 +34,17 @@ export const Home: React.FC = () => {
             <CircularProgress p="1em" isIndeterminate color="purple.500" />
           </Center>
         )}
-        {/* {receipts &&
-          receipts.map((receipt: Receipt) => {
-            return <ReceiptCard key={uuidv4()} receipt={receipt} />;
-          })} */}
+        {receipts && (
+          <Grid
+            templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+            gap="2em"
+            width="100%"
+          >
+            {receipts.map((receipt: Receipt) => (
+              <ReceiptCard key={uuidv4()} receipt={receipt} />
+            ))}
+          </Grid>
+        )}
       </Wrapper>
     </Backdrop>
   );
