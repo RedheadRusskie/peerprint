@@ -7,7 +7,7 @@ type BackdropProps = {
 
 export const Backdrop: React.FC<BackdropProps> = ({ children }) => {
   return (
-    <Box minHeight="100vh" width="100%" backgroundColor="gray.300">
+    <Box minHeight="100vh" width="100%" backgroundColor="white">
       {children}
     </Box>
   );
