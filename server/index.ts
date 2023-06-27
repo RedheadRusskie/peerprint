@@ -21,6 +21,16 @@ app.get("/getReceipts", async (req, res) => {
   }
 });
 
+app.post("/addReceipt", async (req, res) => {
+  try {
+    const receipt = new ReceiptModel(req.body);
+    await receipt.save();
+    res.status(201).json(receipt);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 app.listen(80, () => {
   console.log("Connected to MongoDB");
 });

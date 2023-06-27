@@ -1,6 +1,6 @@
 export default interface Receipt {
   service: string;
-  quantity: number;
+  quantity?: number;
   total: number;
   date: Date;
   name?: string;
