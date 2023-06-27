@@ -1,4 +1,11 @@
-import { Center, CircularProgress, Grid, Heading } from "@chakra-ui/react";
+import {
+  Center,
+  CircularProgress,
+  Flex,
+  Grid,
+  Heading,
+  Spacer,
+} from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import Receipt from "../types";
 import { v4 as uuidv4 } from "uuid";
@@ -7,6 +14,7 @@ import { useGetReceipts } from "../hooks/useGetReceipts";
 import { Wrapper } from "../components/common/Wrapper";
 import { Banner } from "../components/Banner/Banner";
 import { ReceiptCard } from "../components/ReceiptCard/ReceiptCard";
+import { AddReceiptMenu } from "../components/AddReceiptMenu/AddReceiptMenu";
 
 export const Home: React.FC = () => {
   const { data: receipts, isLoading, error } = useGetReceipts();
@@ -26,9 +34,13 @@ export const Home: React.FC = () => {
     <Backdrop>
       <Wrapper>
         <Banner />
-        <Heading fontSize="4rem" my="0.5em" color="purple.500">
-          Receipts
-        </Heading>
+        <Flex alignItems="center">
+          <Heading fontSize="4rem" my="0.5em" color="purple.500">
+            Receipts
+          </Heading>
+          <Spacer />
+          <AddReceiptMenu />
+        </Flex>
         {isLoading && (
           <Center>
             <CircularProgress p="1em" isIndeterminate color="purple.500" />
