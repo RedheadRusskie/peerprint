@@ -5,7 +5,13 @@ export const NavBar: React.FC = () => {
   return (
     <BrowserRouter basename="/">
       <Box backgroundColor="white" px={4} py={5}>
-        <Flex px={30} justifyContent="space-between" alignItems="center">
+        <Flex
+          m="auto"
+          maxWidth="95em"
+          px={30}
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Link to="/">
             <Flex>
               <Text fontSize="3xl" fontWeight="bold" color="purple.500">

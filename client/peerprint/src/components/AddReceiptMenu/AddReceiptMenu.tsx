@@ -46,11 +46,10 @@ export const AddReceiptMenu: React.FC = () => {
   };
 
   const onSubmit: SubmitHandler<Receipt> = async (data) => {
-    const date = new Date(data.date);
     const dataWithCorrectTypes: Receipt = {
       ...data,
       total: Number(data.total),
-      date: date,
+      date: new Date(data.date),
     };
 
     try {
@@ -67,7 +66,7 @@ export const AddReceiptMenu: React.FC = () => {
     <Box>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent borderRadius="xl" p="1.5em">
           <ModalHeader fontSize="2xl">Add Expense</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
