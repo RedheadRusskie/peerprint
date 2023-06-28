@@ -1,9 +1,20 @@
-import { Box, Card, Heading, Text, Image, Divider } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  Heading,
+  Text,
+  Image,
+  Divider,
+  IconButton,
+  useToast,
+} from "@chakra-ui/react";
 import Receipt from "../../types";
 import styles from "./ReceiptCard.module.scss";
 import dayjs from "dayjs";
 import "dayjs/locale/en";
+import axios from "axios";
 import femaleAvatar from "../../assets/female-avatar.svg";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 interface ReceiptCardProps {
   receipt: Receipt;
@@ -11,6 +22,27 @@ interface ReceiptCardProps {
 
 export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
   const formattedDate = dayjs(receipt.date).format("DD/MM/YYYY");
+  const toast = useToast();
+
+  const displayFeedback = (response: Error | string) => {
+    toast({
+      title: response instanceof Error ? "Error" : response,
+      description: response instanceof Error ? response.message : "",
+      status: response instanceof Error ? "error" : "success",
+      duration: 5000,
+      isClosable: true,
+      position: "top",
+    });
+  };
+
+  const handleClick = async () => {
+    try {
+      await axios.delete(`http://localhost:80/deleteReceipt/${receipt._id}`);
+      displayFeedback("Successfully deleted!");
+    } catch (error) {
+      displayFeedback(error as Error);
+    }
+  };
 
   return (
     <Card
@@ -38,6 +70,16 @@ export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
       <Text fontWeight="bold" fontSize="3xl" color="green.400">
         ${receipt.total}
       </Text>
+      <IconButton
+        onClick={handleClick}
+        className={styles.deleteButton}
+        icon={<DeleteIcon />}
+        aria-label="Delete"
+        size="lg"
+        borderRadius="full"
+        backgroundColor="red.400"
+        color="white"
+      />
     </Card>
   );
 };
