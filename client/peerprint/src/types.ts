@@ -1,4 +1,5 @@
 export default interface Receipt {
+  _id: string;
   service: string;
   quantity?: number;
   total: number;

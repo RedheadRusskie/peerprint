@@ -31,6 +31,18 @@ app.post("/addReceipt", async (req, res) => {
   }
 });
 
+app.delete("/deleteReceipt/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedReceipt = await ReceiptModel.findByIdAndDelete(id);
+
+    if (!deletedReceipt) res.status(404).json({ message: "Receipt not found" });
+    else res.status(200).json({ message: "Receipt deleted" });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 app.listen(80, () => {
   console.log("Connected to MongoDB");
 });
