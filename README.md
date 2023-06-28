@@ -34,7 +34,7 @@ npm install
 npx nodemon server/index.ts
 ```
 
-5. Launch application:
+5. In a separate instance of your Shell, launch the application:
 
 ```bash
 npm run dev
