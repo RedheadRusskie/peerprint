@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/en";
 import axios from "axios";
 import femaleAvatar from "../../assets/female-avatar.svg";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, DownloadIcon } from "@chakra-ui/icons";
 
 interface ReceiptCardProps {
   receipt: Receipt;
@@ -35,7 +35,7 @@ export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
     });
   };
 
-  const handleClick = async () => {
+  const handleClickToDelete = async () => {
     try {
       await axios.delete(`http://localhost:80/deleteReceipt/${receipt._id}`);
       displayFeedback("Successfully deleted!");
@@ -43,6 +43,8 @@ export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
       displayFeedback(error as Error);
     }
   };
+
+  const handleClickToExport = () => {};
 
   return (
     <Card
@@ -71,13 +73,23 @@ export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
         ${receipt.total}
       </Text>
       <IconButton
-        onClick={handleClick}
+        onClick={handleClickToDelete}
         className={styles.deleteButton}
         icon={<DeleteIcon />}
         aria-label="Delete"
         size="lg"
         borderRadius="full"
         backgroundColor="red.400"
+        color="white"
+      />
+      <IconButton
+        onClick={handleClickToExport}
+        className={styles.exportButton}
+        icon={<DownloadIcon />}
+        aria-label="Export"
+        size="lg"
+        borderRadius="full"
+        backgroundColor="green.400"
         color="white"
       />
     </Card>
