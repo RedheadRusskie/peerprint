@@ -13,6 +13,8 @@ import styles from "./ReceiptCard.module.scss";
 import dayjs from "dayjs";
 import "dayjs/locale/en";
 import axios from "axios";
+import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
+import { ReceiptPDF } from "../ReceiptPDF/ReceiptPDF";
 import femaleAvatar from "../../assets/female-avatar.svg";
 import { DeleteIcon, DownloadIcon } from "@chakra-ui/icons";
 
@@ -44,7 +46,18 @@ export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
     }
   };
 
-  const handleClickToExport = () => {};
+  const handleClickToExport = async () => {
+    const receiptPDF = <ReceiptPDF receipt={receipt} />;
+    const pdfBlob = await pdf(receiptPDF).toBlob();
+    const blobUrl = URL.createObjectURL(pdfBlob);
+    const downloadLink = document.createElement("a");
+
+    downloadLink.href = blobUrl;
+    downloadLink.download = `${receipt._id}.pdf`;
+    downloadLink.click();
+
+    URL.revokeObjectURL(blobUrl);
+  };
 
   return (
     <Card
@@ -82,16 +95,21 @@ export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
         backgroundColor="red.400"
         color="white"
       />
-      <IconButton
-        onClick={handleClickToExport}
-        className={styles.exportButton}
-        icon={<DownloadIcon />}
-        aria-label="Export"
-        size="lg"
-        borderRadius="full"
-        backgroundColor="green.400"
-        color="white"
-      />
+      <PDFDownloadLink
+        document={<ReceiptPDF receipt={receipt} />}
+        fileName="receipt.pdf"
+      >
+        <IconButton
+          onClick={handleClickToExport}
+          className={styles.exportButton}
+          icon={<DownloadIcon />}
+          aria-label="Export"
+          size="lg"
+          borderRadius="full"
+          backgroundColor="green.400"
+          color="white"
+        />
+      </PDFDownloadLink>
     </Card>
   );
 };
