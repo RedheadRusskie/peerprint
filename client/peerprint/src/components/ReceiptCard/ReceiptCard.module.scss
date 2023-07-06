@@ -1,18 +1,28 @@
 .card {
   box-shadow: 0px 0px 30px -20px rgba(0, 0, 0, 0.4) !important;
-  cursor: pointer;
   transition: 0.5s !important;
 
-  .deleteButton {
+  .deleteButton,
+  .exportButton {
+    cursor: pointer;
     position: absolute;
     bottom: 1.2em;
-    right: 1.2em;
     opacity: 0;
     transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .deleteButton {
+    right: 1.2em;
     transform: translateX(50%);
   }
 
-  &:hover .deleteButton {
+  .exportButton {
+    right: 5em;
+    transform: translateX(100%);
+  }
+
+  &:hover .deleteButton,
+  &:hover .exportButton {
     opacity: 1;
     transform: translateX(0%);
   }

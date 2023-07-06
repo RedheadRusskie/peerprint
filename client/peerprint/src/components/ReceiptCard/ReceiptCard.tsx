@@ -13,8 +13,10 @@ import styles from "./ReceiptCard.module.scss";
 import dayjs from "dayjs";
 import "dayjs/locale/en";
 import axios from "axios";
+import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
+import { ReceiptPDF } from "../ReceiptPDF/ReceiptPDF";
 import femaleAvatar from "../../assets/female-avatar.svg";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, DownloadIcon } from "@chakra-ui/icons";
 
 interface ReceiptCardProps {
   receipt: Receipt;
@@ -35,13 +37,26 @@ export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
     });
   };
 
-  const handleClick = async () => {
+  const handleClickToDelete = async () => {
     try {
       await axios.delete(`http://localhost:80/deleteReceipt/${receipt._id}`);
       displayFeedback("Successfully deleted!");
     } catch (error) {
       displayFeedback(error as Error);
     }
+  };
+
+  const handleClickToExport = async () => {
+    const receiptPDF = <ReceiptPDF receipt={receipt} />;
+    const pdfBlob = await pdf(receiptPDF).toBlob();
+    const blobUrl = URL.createObjectURL(pdfBlob);
+    const downloadLink = document.createElement("a");
+
+    downloadLink.href = blobUrl;
+    downloadLink.download = `${receipt._id}.pdf`;
+    downloadLink.click();
+
+    URL.revokeObjectURL(blobUrl);
   };
 
   return (
@@ -71,7 +86,7 @@ export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
         ${receipt.total}
       </Text>
       <IconButton
-        onClick={handleClick}
+        onClick={handleClickToDelete}
         className={styles.deleteButton}
         icon={<DeleteIcon />}
         aria-label="Delete"
@@ -80,6 +95,21 @@ export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
         backgroundColor="red.400"
         color="white"
       />
+      <PDFDownloadLink
+        document={<ReceiptPDF receipt={receipt} />}
+        fileName="receipt.pdf"
+      >
+        <IconButton
+          onClick={handleClickToExport}
+          className={styles.exportButton}
+          icon={<DownloadIcon />}
+          aria-label="Export"
+          size="lg"
+          borderRadius="full"
+          backgroundColor="green.400"
+          color="white"
+        />
+      </PDFDownloadLink>
     </Card>
   );
 };
