@@ -2,7 +2,6 @@ import {
   Center,
   CircularProgress,
   Flex,
-  Grid,
   Heading,
   Spacer,
 } from "@chakra-ui/react";
@@ -15,6 +14,7 @@ import { Wrapper } from "../components/common/Wrapper";
 import { Banner } from "../components/Banner/Banner";
 import { ReceiptCard } from "../components/ReceiptCard/ReceiptCard";
 import { AddReceiptMenu } from "../components/AddReceiptMenu/AddReceiptMenu";
+import { Pagination } from "../components/common/Pagination";
 
 export const Home: React.FC = () => {
   const { data: receipts, isLoading, error } = useGetReceipts();
@@ -47,15 +47,11 @@ export const Home: React.FC = () => {
           </Center>
         )}
         {receipts && (
-          <Grid
-            templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
-            gap="2em"
-            width="100%"
-          >
+          <Pagination itemsPerPage={8}>
             {receipts.map((receipt: Receipt) => (
               <ReceiptCard key={uuidv4()} receipt={receipt} />
             ))}
-          </Grid>
+          </Pagination>
         )}
       </Wrapper>
     </Backdrop>
